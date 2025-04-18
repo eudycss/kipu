@@ -32,7 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 .cursor/
-
+.cursorrules
 ### Archivos del sistema ###
 .DS_Store
 Thumbs.db
