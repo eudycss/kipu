@@ -98,22 +98,39 @@ public class DocenteServiceImpl implements DocenteService {
         List<Docente> allDocentes = docenteRepository.findAll();
         
         // Preparamos listas separadas para docentes del área especificada y otros docentes
-        List<DocenteDTO> docentesInArea = new ArrayList<>();
-        List<DocenteDTO> otherDocentes = new ArrayList<>();
+        List<DocenteDTO> docentesInSpecifiedArea = new ArrayList<>();
+        List<DocenteDTO> docentesInOtherAreas = new ArrayList<>();
+        List<DocenteDTO> docentesWithoutArea = new ArrayList<>();
         
-        // Clasificamos los docentes
+        // Clasificamos los docentes en tres grupos:
+        // 1. Docentes del área especificada
+        // 2. Docentes de otras áreas
+        // 3. Docentes sin área asignada
         for (Docente docente : allDocentes) {
             DocenteDTO dto = convertToDTO(docente);
-            if (areaId != null && docente.getAreaId() != null && docente.getAreaId().equals(areaId)) {
-                docentesInArea.add(dto);
+            
+            if (docente.getAreaId() == null) {
+                // Docentes sin área asignada
+                docentesWithoutArea.add(dto);
+            } else if (docente.getAreaId().equals(areaId)) {
+                // Docentes del área especificada
+                docentesInSpecifiedArea.add(dto);
             } else {
-                otherDocentes.add(dto);
+                // Docentes de otras áreas
+                docentesInOtherAreas.add(dto);
             }
         }
         
-        // Combinamos las listas, con los docentes del área especificada primero
-        List<DocenteDTO> result = new ArrayList<>(docentesInArea);
-        result.addAll(otherDocentes);
+        // Ordenamos los docentes de otras áreas por su ID de área
+        docentesInOtherAreas.sort(Comparator.comparing(DocenteDTO::getAreaId, Comparator.nullsLast(Comparator.naturalOrder())));
+        
+        // Combinamos las listas en el orden deseado:
+        // 1. Docentes del área especificada
+        // 2. Docentes de otras áreas (ordenados por ID de área)
+        // 3. Docentes sin área asignada
+        List<DocenteDTO> result = new ArrayList<>(docentesInSpecifiedArea);
+        result.addAll(docentesInOtherAreas);
+        result.addAll(docentesWithoutArea);
         
         return result;
     }
