@@ -1,0 +1,250 @@
+{
+  "info": {
+    "_postman_id": "a9b8c7d6-e5f4-1234-abcd-0123456789ab",
+    "name": "SEIBE API",
+    "description": "Colección de endpoints para el sistema SEIBE",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Registro de Usuario (Rector)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"rector3\",\n    \"password\": \"password123*\",\n    \"email\": \"nuevo_rector@example.com\",\n    \"roles\": [\"rector\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/signup",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "signup"
+              ]
+            },
+            "description": "Registra un nuevo usuario con rol Rector en el sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Iniciar Sesión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = JSON.parse(responseBody);",
+                  "pm.environment.set(\"token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"rector3\",\n    \"password\": \"password123*\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/signin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "signin"
+              ]
+            },
+            "description": "Inicia sesión en el sistema y obtiene un token JWT. Este token se guarda automáticamente en la variable de entorno 'token'."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para registro e inicio de sesión"
+    },
+    {
+      "name": "Docentes",
+      "item": [
+        {
+          "name": "Obtener docentes por área (ordenados)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/docentes/area/4?mostrarTodos=true",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "docentes",
+                "area",
+                "4"
+              ],
+              "query": [
+                {
+                  "key": "mostrarTodos",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Obtiene la lista de docentes ordenada por área, mostrando primero los docentes del área especificada (ID 4) y luego el resto de docentes."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Ofertas",
+      "item": [
+        {
+          "name": "Obtener docentes por oferta",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ofertas/1/docentes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ofertas",
+                "1",
+                "docentes"
+              ]
+            },
+            "description": "Obtiene la lista de docentes disponibles y no disponibles para una oferta específica (ID 1)."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener ofertas por proceso y periodo",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ofertas/proceso/2?periodoId=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ofertas",
+                "proceso",
+                "2"
+              ],
+              "query": [
+                {
+                  "key": "periodoId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Obtiene las ofertas académicas relacionadas con un proceso educativo específico (ID 2) para un periodo lectivo determinado (ID 1)."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener asignaturas por oferta",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ofertas/9/asignaturas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ofertas",
+                "9",
+                "asignaturas"
+              ]
+            },
+            "description": "Obtiene las asignaturas asociadas a una oferta específica (ID 9), filtradas según el nivel educativo."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+} 
