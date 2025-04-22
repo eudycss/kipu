@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: kipu-docentes-back
+    env: docker
+    region: ohio
+    plan: free
+    branch: dev
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://ep-still-cherry-a2hvbbba.eu-central-1.aws.neon.tech/neondb?sslmode=require
+      - key: SPRING_DATASOURCE_USERNAME
+        value: neondb_owner
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: npg_ftMIuspBwE72 
