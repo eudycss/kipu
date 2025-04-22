@@ -5,6 +5,9 @@ services:
     region: ohio
     plan: free
     branch: dev
+    dockerfilePath: ./Dockerfile
+    buildCommand: docker build -t kipu-docentes-back .
+    startCommand: docker run -p 8080:8080 kipu-docentes-back
     healthCheckPath: /actuator/health
     envVars:
       - key: SPRING_PROFILES_ACTIVE
